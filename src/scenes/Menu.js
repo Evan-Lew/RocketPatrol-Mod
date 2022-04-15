@@ -11,15 +11,16 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_gunshot', './assets/gunshot.wav');
         this.load.audio('sfx_quack', './assets/quack2.wav');
         this.load.audio('sfx_reload', './assets/reload.wav');
+        this.load.image('start_menu', './assets/start_menu.png');
     }
 
     create() {
         // menu text configuration
         let menuConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            fontSize: '18px',
+            backgroundColor: '#e8e8e8',
+            color: '#1e1e1e',
             align: 'right',
             padding: {
                 top: 5,
@@ -28,13 +29,13 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         
-        // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'BULLET PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#00FF00';
-        menuConfig.color = '#000';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
-    
+        this.add.tileSprite(0, 0, 640, 480, 'start_menu').setOrigin(0, 0);
+
+        // P1 controls
+        this.add.text(game.config.width/2, 330, 'P1) Use ←→ arrows to move & (UP Arrow) to fire', menuConfig).setOrigin(0.5);
+        // P2 controls
+        this.add.text(game.config.width/2, 370, 'P2) Use A and D to move & W to fire', menuConfig).setOrigin(0.5);
+       
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -42,19 +43,21 @@ class Menu extends Phaser.Scene {
 
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-          // easy mode
+          // 1 player mode
           game.settings = {
             duckSpeed: 3,
-            gameTimer: 60000    
+            gameTimer: 60000,
+            mode: 1    
           }
           this.sound.play('sfx_reload', {volume: 25});
           this.scene.start("playScene");    
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-          // hard mode
+          // 2 player mode
           game.settings = {
-            duckSpeed: 4,
-            gameTimer: 45000    
+            duckSpeed: 3,
+            gameTimer: 60000,
+            mode: 2    
           }
           this.sound.play('sfx_reload', {volume: 25});
           this.scene.start("playScene");    

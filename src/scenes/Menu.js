@@ -5,9 +5,12 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
-        this.load.audio('sfx_select', './assets/blip_select12.wav');
-        this.load.audio('sfx_explosion', './assets/explosion38.wav');
-        this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        this.load.audio('sfx_select', './assets/blip_select12.wav'); // old
+        this.load.audio('sfx_explosion', './assets/explosion38.wav'); // old
+        this.load.audio('sfx_rocket', './assets/rocket_shot.wav'); // old
+        this.load.audio('sfx_gunshot', './assets/gunshot.wav');
+        this.load.audio('sfx_quack', './assets/quack2.wav');
+        this.load.audio('sfx_reload', './assets/reload.wav');
     }
 
     create() {
@@ -44,7 +47,7 @@ class Menu extends Phaser.Scene {
             duckSpeed: 3,
             gameTimer: 60000    
           }
-          this.sound.play('sfx_select');
+          this.sound.play('sfx_reload', {volume: 25});
           this.scene.start("playScene");    
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
@@ -53,7 +56,7 @@ class Menu extends Phaser.Scene {
             duckSpeed: 4,
             gameTimer: 45000    
           }
-          this.sound.play('sfx_select');
+          this.sound.play('sfx_reload', {volume: 25});
           this.scene.start("playScene");    
         }
     }

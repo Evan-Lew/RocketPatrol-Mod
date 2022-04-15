@@ -13,7 +13,8 @@ class Play extends Phaser.Scene {
         this.load.image('duck', './assets/duck.png');
         
         // load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9}); // old
+        this.load.spritesheet('dead_duck', './assets/duck_spritesheet.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 10});
     }
 
     create() {
@@ -45,7 +46,7 @@ class Play extends Phaser.Scene {
         // animation config
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('dead_duck', { start: 0, end: 9, first: 0}),
             frameRate: 30
         });
 
@@ -128,18 +129,18 @@ class Play extends Phaser.Scene {
     birdExplode(bird) {
         // temporarily hide bird
         bird.alpha = 0;                         
-        // create explosion sprite at bird's position
-        let boom = this.add.sprite(bird.x, bird.y, 'explosion').setOrigin(0, 0);
+        // create dead_duck sprite at bird's position
+        let boom = this.add.sprite(bird.x, bird.y, 'dead_duck').setOrigin(0, 0);
         boom.anims.play('explode');             // play explode animation
         boom.on('animationcomplete', () => {    // callback after anim completes
             bird.reset();                         // reset bird position
             bird.alpha = 1;                       // make bird visible again
-            boom.destroy();                       // remove explosion sprite
+            boom.destroy();                       // remove dead_duck sprite
         });
         // score add and repaint
         this.p1Score += bird.points;
         this.scoreLeft.text = this.p1Score;
         
-        this.sound.play('sfx_explosion');
+        this.sound.play('sfx_quack', {volume: 3});
     }
 }

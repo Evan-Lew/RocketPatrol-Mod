@@ -9,9 +9,13 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_explosion', './assets/explosion38.wav'); // old
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav'); // old
         this.load.audio('sfx_gunshot', './assets/gunshot.wav');
-        this.load.audio('sfx_quack', './assets/quack2.wav');
         this.load.audio('sfx_reload', './assets/reload.wav');
         this.load.image('start_menu', './assets/start_menu.png');
+        // Duck noises
+        this.load.audio('sfx_quack1', './assets/quack1.wav');
+        this.load.audio('sfx_quack2', './assets/quack2.wav');
+        this.load.audio('sfx_quack3', './assets/quack3.wav');
+        this.load.audio('sfx_wilhem', './assets/wilhem.wav');
     }
 
     create() {
@@ -32,9 +36,10 @@ class Menu extends Phaser.Scene {
         this.add.tileSprite(0, 0, 640, 480, 'start_menu').setOrigin(0, 0);
 
         // P1 controls
-        this.add.text(game.config.width/2, 330, 'P1) Use ←→ arrows to move & (UP Arrow) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, 330, 'P1) Use A and D to move & W to fire', menuConfig).setOrigin(0.5);
         // P2 controls
-        this.add.text(game.config.width/2, 370, 'P2) Use A and D to move & W to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, 370, 'P2) Use ←→ arrows to move & (UP Arrow) to fire', menuConfig).setOrigin(0.5);
+        
        
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);

@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png'); // old
         this.load.image('forest', './assets/forest.png');
         this.load.image('bullet', './assets/bullet.png');
+        this.load.image('bullet2', './assets/bullet2.png');
         this.load.image('duck', './assets/duck.png');
         this.load.image('cloud', './assets/cloud.png');
         
@@ -38,8 +39,8 @@ class Play extends Phaser.Scene {
         }
 
         // white borders
-        // this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
-        // this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
+        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
+        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
         // this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
         // this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
     
@@ -48,7 +49,7 @@ class Play extends Phaser.Scene {
 
         // add bullet (p2)
         if (game.settings.mode == 2) {
-            this.p2Bullet = new Bullet2(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'bullet').setOrigin(0.5, 0);
+            this.p2Bullet = new Bullet2(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'bullet2').setOrigin(0.5, 0);
         }
 
         // add Ducks (x3)
@@ -78,12 +79,27 @@ class Play extends Phaser.Scene {
             this.p2Score = 0;
         }
 
-        // display score
+        // display p1 score
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            align: 'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, 60, this.p1Score, scoreConfig);
+        
+        // display p2 score
+        let scoreConfig2 = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#ffffff',
+            color: '#000000',
             align: 'right',
             padding: {
                 top: 5,
@@ -91,10 +107,8 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
-        
         if (game.settings.mode == 2) {
-            this.scoreRight = this.add.text(510, borderUISize + borderPadding*2, this.p2Score, scoreConfig);
+            this.scoreRight = this.add.text(510, 60, this.p2Score, scoreConfig2);
         }
 
         // GAME OVER flag
@@ -103,7 +117,21 @@ class Play extends Phaser.Scene {
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'HUNT OVER', scoreConfig).setOrigin(0.5);
+            if (game.settings.mode == 1) {
+                this.add.text(game.config.width/2, game.config.height/2, 'HUNT OVER', scoreConfig).setOrigin(0.5);
+            }
+            else {
+                if (this.p1Score > this.p2Score) {
+                    this.add.text(game.config.width/2, game.config.height/2, 'Player 1 Wins!', scoreConfig).setOrigin(0.5);
+                }
+                else if (this.p2Score > this.p1Score) {
+                    this.add.text(game.config.width/2, game.config.height/2, 'Player 2 Wins!', scoreConfig).setOrigin(0.5);
+                }
+                else {
+                    this.add.text(game.config.width/2, game.config.height/2, 'Tied Game', scoreConfig).setOrigin(0.5);
+                }
+            }
+
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
@@ -195,6 +223,20 @@ class Play extends Phaser.Scene {
             this.scoreRight.text = this.p2Score;
         }
 
-        this.sound.play('sfx_quack', {volume: 3});
+        // Randomized death sound
+        var random_sound = Phaser.Math.Between(1, 4);
+        console.log(random_sound);
+        if (random_sound == 1) {
+            this.sound.play('sfx_quack1', {volume: 3});
+        }
+        else if (random_sound == 2) {
+            this.sound.play('sfx_quack2', {volume: 3});
+        }
+        else if (random_sound == 3) {
+            this.sound.play('sfx_quack3', {volume: 2});
+        }
+        else {
+            this.sound.play('sfx_wilhem', {volume: 2});
+        }
     }
 }

@@ -5,9 +5,6 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png'); // old
-        this.load.image('spaceship', './assets/spaceship.png'); // old
-        this.load.image('starfield', './assets/starfield.png'); // old
         this.load.image('forest', './assets/forest.png');
         this.load.image('bullet', './assets/bullet.png');
         this.load.image('bullet2', './assets/bullet2.png');
@@ -15,7 +12,6 @@ class Play extends Phaser.Scene {
         this.load.image('cloud', './assets/cloud.png');
         
         // load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9}); // old
         this.load.spritesheet('dead_duck', './assets/duck_spritesheet.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 10});
     }
 
@@ -24,13 +20,6 @@ class Play extends Phaser.Scene {
 
         // place tile sprite
         this.forest = this.add.tileSprite(0, 0, 640, 480, 'forest').setOrigin(0, 0);
-
-        // green UI background
-        // this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0xda9432).setOrigin(0, 0);
-        console.log("borderUISize: ", borderUISize);
-        console.log("borderPadding: ", borderPadding);
-        console.log("game.config.width: ", game.config.width);
-        console.log("game.config.height: ", game.config.height);
 
         this.add.tileSprite(0, borderUISize + borderPadding, 170, 74, 'cloud').setOrigin(0, 0); // Left Cloud
         
@@ -41,8 +30,6 @@ class Play extends Phaser.Scene {
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
-        // this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
-        // this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
     
         // add bullet (p1)
         this.p1Bullet = new Bullet(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'bullet').setOrigin(0.5, 0);
@@ -225,7 +212,6 @@ class Play extends Phaser.Scene {
 
         // Randomized death sound
         var random_sound = Phaser.Math.Between(1, 4);
-        console.log(random_sound);
         if (random_sound == 1) {
             this.sound.play('sfx_quack1', {volume: 3});
         }
